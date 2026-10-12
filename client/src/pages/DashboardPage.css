@@ -1,0 +1,66 @@
+.dash__main { max-width: 1040px; margin: 0 auto; padding: 32px 20px 64px; }
+
+.dash__top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.dash__top h1 { margin: 0; font-size: 26px; }
+.dash__hint { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.dash__actions { display: flex; gap: 10px; }
+
+.dash__toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap;
+  margin: 24px 0 16px;
+}
+.dash__tabs { display: flex; gap: 4px; background: #eceff3; padding: 4px; border-radius: 10px; }
+.dash__tab {
+  border: 0; background: transparent; padding: 7px 12px; border-radius: 7px;
+  cursor: pointer; color: var(--muted); font-weight: 500;
+}
+.dash__tab.is-active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+.dash__count { margin-left: 4px; font-size: 12px; opacity: 0.8; }
+.dash__search { max-width: 260px; }
+
+.dash__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.doc-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color 0.12s, transform 0.12s;
+}
+.doc-card:hover { border-color: var(--primary); transform: translateY(-1px); }
+.doc-card__link { display: block; color: inherit; text-decoration: none; }
+.doc-card__preview {
+  height: 96px; display: grid; place-items: center; font-size: 36px;
+  background: linear-gradient(180deg, #f3f5ff, #fafbff);
+  border-bottom: 1px solid var(--border);
+}
+.doc-card__body { padding: 14px 16px 16px; display: grid; gap: 6px; justify-items: start; }
+.doc-card__title {
+  margin: 0; font-size: 16px; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.doc-card__meta { margin: 0; font-size: 13px; color: var(--muted); }
+.doc-card__delete {
+  position: absolute; right: 8px; top: 8px;
+  padding: 4px 8px; font-size: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0; transition: opacity 0.12s;
+}
+.doc-card:hover .doc-card__delete, .doc-card__delete:focus-visible { opacity: 1; }
+
+.doc-card--skeleton { height: 188px; background: linear-gradient(90deg, #eef0f3, #f7f8fa, #eef0f3); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.dash__state { text-align: center; color: var(--muted); padding: 56px 0; display: grid; gap: 12px; justify-items: center; }
+
+@media (max-width: 640px) {
+  .dash__search { max-width: none; width: 100%; }
+  .doc-card__delete { opacity: 1; }
+}

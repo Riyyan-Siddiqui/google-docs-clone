@@ -1,0 +1,53 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String   @db.Text
+  email     String   @unique @db.Citext
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  documents Document[]
+  shares    DocumentShare[]
+
+  @@map("users")
+}
+
+model Document {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerId        String   @map("owner_id") @db.Uuid
+  title          String   @default("Untitled document") @db.Text
+  content        String   @default("") @db.Text
+  sourceFileName String?  @map("source_file_name") @db.Text
+  version        Int      @default(1)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  owner  User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  shares DocumentShare[]
+
+  @@index([ownerId, updatedAt(sort: Desc)], map: "documents_owner_updated_idx")
+  @@map("documents")
+}
+
+model DocumentShare {
+  documentId String   @map("document_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  role       String   @db.Text
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([documentId, userId])
+  @@index([userId], map: "document_shares_user_idx")
+  @@map("document_shares")
+}
